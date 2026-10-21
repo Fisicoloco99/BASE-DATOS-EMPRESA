@@ -18,6 +18,15 @@ cursor_empleados.execute("""
 
 conexion_empleados.commit()
 
+def comprobar(empleado,entry_,orden):
+    variable=entry_.get()
+    if variable=="":
+        print(empleado[orden])
+        return empleado[orden]
+    else:
+        print(variable)
+        return variable
+
 def new_empleado():
     nom_ape=entry_nom_ape.get()
     anio=entry_anio.get()
@@ -28,12 +37,16 @@ def new_empleado():
     
 def editar_empleado():
     p_id=entry_id.get()
-    nom_ape=entry_nom_ape.get()
-    anio=entry_anio.get()
-    asist=entry_asistencias.get()
-    dni=entry_dni.get()
-    cursor_empleados.execute("UPDATE empleados SET nombre_apellido = ?, anio_inicio = ?, asistencias = ?, dni = ? WHERE id = ?",(nom_ape,anio,asist,dni,p_id))
-    conexion_empleados.commit()
+    cursor_empleados.execute("SELECT * FROM empleados")
+    empleados=cursor_empleados.fetchall()
+    for empleado in empleados:
+        if p_id==empleado[0]:
+            nom_ape=comprobar(empleado,entry_nom_ape,1)
+            anio=comprobar(empleado,entry_anio,2)
+            asist=comprobar(empleado,entry_asistencias,3)
+            dni=comprobar(empleado,entry_dni,4)
+            cursor_empleados.execute("UPDATE empleados SET nombre_apellido = ?, anio_inicio = ?, asistencias = ?, dni = ? WHERE id = ?",(nom_ape,anio,asist,dni,p_id))
+            conexion_empleados.commit()
 
 def eliminar_empleado():
     p_id=entry_id.get()
