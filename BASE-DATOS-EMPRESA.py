@@ -34,6 +34,8 @@ def new_empleado():
     dni=entry_dni.get()
     cursor_empleados.execute("INSERT INTO empleados (nombre_apellido,anio_inicio,asistencias,dni) VALUES (?,?,?,?)",(nom_ape,anio,asist,dni))
     conexion_empleados.commit()
+    ver()
+    limpiar_entry()
     
 def editar_empleado():
     p_id=entry_id.get()
@@ -47,11 +49,15 @@ def editar_empleado():
             dni=comprobar(empleado,entry_dni,4)
             cursor_empleados.execute("UPDATE empleados SET nombre_apellido = ?, anio_inicio = ?, asistencias = ?, dni = ? WHERE id = ?",(nom_ape,anio,asist,dni,p_id))
             conexion_empleados.commit()
+            ver()
+            limpiar_entry()
 
 def eliminar_empleado():
     p_id=entry_id.get()
     cursor_empleados.execute("DELETE FROM empleados WHERE id = ?",(p_id,))
     conexion_empleados.commit()
+    ver()
+    limpiar_entry()
 
 def ver():
     lista.delete(0, tk.END)
