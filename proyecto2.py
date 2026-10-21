@@ -25,10 +25,8 @@ conexion_empleados.commit()
 def comprobar(empleado,entry_,orden):
     variable=entry_.get()
     if variable=="":
-        print("AES")
         return empleado[orden]
     else:
-        print("variable")
         return variable
 
 def new_empleado():
@@ -46,9 +44,7 @@ def editar_empleado():
     cursor_empleados.execute("SELECT * FROM empleados")
     empleados=cursor_empleados.fetchall()
     for empleado in empleados:
-        print(empleado)
-        if p_id in empleado:
-            print("h")
+        if int(p_id)==empleado[0]:
             nom_ape=comprobar(empleado,entry_nom_ape,1)
             anio=comprobar(empleado,entry_anio,2)
             asist=comprobar(empleado,entry_asistencias,3)
@@ -91,7 +87,7 @@ label_nom_ape=tk.Label(ventana, text="Apellido nombre")
 label_nom_ape.pack()
 entry_nom_ape=tk.Entry(ventana)
 entry_nom_ape.pack()
-label_anios=tk.Label(ventana, text="Anios trabajados")
+label_anios=tk.Label(ventana, text="Anios trabajados", padx = 10, pady = 10)
 label_anios.pack()
 entry_anio=tk.Entry(ventana)
 entry_anio.pack()
@@ -118,9 +114,6 @@ boton_editar.pack()
 # Frames
 frame_id = tk.Frame(ventana, bg=COLOR_FONDO)
 frame_id.pack(pady=10)
-tk.Label(frame_id, text="ID a eliminar:", bg=COLOR_FONDO, fg=COLOR_TEXTO).pack(side=tk.LEFT, padx=5)
-entrada_id = tk.Entry(frame_id, width=10)
-entrada_id.pack(side=tk.LEFT)
 frame_botones = tk.Frame(ventana, bg=COLOR_FONDO)
 frame_botones.pack(fill="x", padx=50, pady=20) 
 boton_agregar = tk.Button(frame_botones, text="AGREGAR EXPEDIENTE",command = new_empleado ,font=("Arial", 12), bg="green", fg="white")
