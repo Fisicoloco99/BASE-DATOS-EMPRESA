@@ -3,12 +3,10 @@
 #Registro de empresa:Tabla empleados: id, nombre y apellido, anios trabajados, asistencias, dni. CRUD. Asistencias, justificada o no.  bonificaciones o no
 #Registro de empresa:Tabla empleados: id, nombre y apellido, anios trabajados, asistencias, dni. CRUD. Asistencias, justificada o no.  bonificaciones o no
 import sqlite3
-
 import tkinter as tk
-
+from tkinter import Label,Button,Entry,Listbox,Frame,Entry
 conexion_empleados = sqlite3.connect("Empleados.db")
 cursor_empleados = conexion_empleados.cursor()
-
 cursor_empleados.execute("""
     CREATE TABLE IF NOT EXISTS empleados (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,7 +18,6 @@ cursor_empleados.execute("""
 """)
 
 conexion_empleados.commit()
-
 
 def comprobar(empleado,entry_,orden):
     variable=entry_.get()
@@ -75,50 +72,71 @@ def limpiar_entry():
     entry_dni.delete(0,tk.END)
 
 
-ventana = tk.Tk()
-ventana.title("Empresa")
-ventana.geometry("1080x1240")
-ventana.resizable(False,False)
-label_id=tk.Label(ventana, text="ID",padx=0,pady=0)
-label_id.pack()
-entry_id=tk.Entry(ventana)
-entry_id.pack()
-label_nom_ape=tk.Label(ventana, text="Apellido nombre")
-label_nom_ape.pack()
-entry_nom_ape=tk.Entry(ventana)
-entry_nom_ape.pack()
-label_anios=tk.Label(ventana, text="Anios trabajados")
-label_anios.pack()
-entry_anio=tk.Entry(ventana)
-entry_anio.pack()
-label_asistencias=tk.Label(ventana, text="Asistencias")
-label_asistencias.pack()
-entry_asistencias=tk.Entry(ventana)
-entry_asistencias.pack()
-label_dni=tk.Label(ventana, text="DNI")
-label_dni.pack()
-entry_dni=tk.Entry(ventana)
-entry_dni.pack()
-label_asistencias_justificadas=tk.Label(ventana, text="Asistencias justificadas o no")
-label_asistencias_justificadas.pack()
-label_bonificaciones=tk.Label(ventana, text="Bonificaciones o no")
-label_bonificaciones.pack()
-lista = tk.Listbox(ventana)
-lista.pack()
-ver()
 COLOR_FONDO = "#FBFBFB"
 COLOR_TEXTO = "#010300"
-#Botones
-boton_editar = tk.Button(ventana,text ="EDITAR EMPLEADO",command=editar_empleado)
-boton_editar.pack()
-# Frames
-frame_id = tk.Frame(ventana, bg=COLOR_FONDO)
-frame_id.pack(pady=10)
-frame_botones = tk.Frame(ventana, bg=COLOR_FONDO)
-frame_botones.pack(fill="x", padx=50, pady=20) 
-boton_agregar = tk.Button(frame_botones, text="AGREGAR EXPEDIENTE",command = new_empleado ,font=("Arial", 12), bg="green", fg="white")
-boton_agregar.pack(side=tk.LEFT)
-# Y aca tambien le puse fg="white" para que resalte mas
-boton_eliminar = tk.Button(frame_botones, text="ELIMINAR ARCHIVOS", command=eliminar_empleado,font=("Arial", 12), bg="red", fg="white")
-boton_eliminar.pack(side=tk.RIGHT)
+# VENTANA
+ventana = tk.Tk()
+ventana.title("Empresa")
+ventana.geometry("1080x800")
+ventana.config( bg=COLOR_FONDO)
+ventana.resizable(False,False)
+
+# ETIQUETAS FILA 0
+
+label_id=Label(ventana, text="ID",bg = COLOR_FONDO )
+label_id.grid(row=0, column=0, padx=10,pady = 5)
+label_anios=tk.Label(ventana, text="Anios trabajados",bg = COLOR_FONDO)
+label_anios.grid(row=0, column=2,padx=10,pady = 5)
+label_nom_ape=Label(ventana, text="Apellido nombre",bg = COLOR_FONDO,)
+label_nom_ape.grid(row=0, column=1, padx=10,pady = 5)
+label_asistencias= Label(ventana, text="Asistencias",bg = COLOR_FONDO,)
+label_asistencias.grid(row=0, column=3,padx=10,pady = 5)
+label_dni= Label(ventana, text="DNI",bg = COLOR_FONDO,)
+label_dni.grid(row=0, column=4,padx=10,pady = 5)
+
+#ENTRADAS FILA 1
+entry_id= Entry(ventana)
+entry_id.grid(row=1, column=0, padx=10)
+entry_nom_ape=Entry(ventana)
+entry_nom_ape.grid(row=1, column=1, padx=10)
+entry_anio=tk.Entry(ventana)
+entry_anio.grid(row=1, column=2, padx=10)
+entry_asistencias= Entry(ventana)
+entry_asistencias.grid(row=1, column=3, padx=10)
+entry_dni= Entry(ventana)
+entry_dni.grid(row = 1, column=4, padx=10)
+
+# FILA 
+label_asistencias_justificadas= Label(ventana, text="Asistencias justificadas o no",bg = COLOR_FONDO,)
+label_asistencias_justificadas.grid(row = 6, column=1, padx=10)
+label_bonificaciones=Label(ventana, text="Bonificaciones o no",bg = COLOR_FONDO,)
+label_bonificaciones.grid(row = 6, column=3, padx=10)
+
+#LISTBOX  FILA 2
+lista = Listbox(ventana, width=100, height=15)
+lista.grid(row=2, column=0, columnspan=5, pady=20)
+ver()
+
+# FRAME INFERIOR (Botones)
+frame_botones = Frame(ventana, bg=COLOR_FONDO, width= 100, height= 10)
+frame_botones.grid(row=3, column=0, columnspan=5, sticky="ew", pady=20)
+
+# BOTONES FILA 3
+# Usamos grid dentro del frame para acomodar los 3 botones en una misma fila
+boton_agregar = Button(frame_botones, text="AGREGAR EXPEDIENTE", command=new_empleado, font=("Arial", 12), bg="green", fg="white")
+boton_agregar.grid(row=3, column=1, padx=10)
+
+# El boton del medio va en la columna 1
+boton_editar = Button(frame_botones, text="EDITAR EMPLEADO", command=editar_empleado, font=("Arial", 12), bg="blue", fg="white")
+boton_editar.grid(row=3, column=2, padx=10)
+
+boton_eliminar = Button(frame_botones, text="ELIMINAR ARCHIVOS", command=eliminar_empleado, font=("Arial", 12), bg="red", fg="white")
+boton_eliminar.grid(row=3, column=3, padx=10)
+
+# Esto hace que la columna del medio (la del botón editar) se expanda y empuje los otros a los costados
+frame_botones.grid_columnconfigure(0, weight=1)
+frame_botones.grid_columnconfigure(1, weight=0)
+frame_botones.grid_columnconfigure(2, weight=1)
+
+
 ventana.mainloop()
